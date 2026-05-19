@@ -20,9 +20,9 @@ set(MOTOR_SOURCES
 # ---------------------------------------------------------------------------
 # Ejecutable principal: servidor HTTP del motor
 # ---------------------------------------------------------------------------
-# add_executable(mancala_motor src/main.cpp ${MOTOR_SOURCES})
-# target_link_libraries(mancala_motor PRIVATE OpenMP::OpenMP_CXX)
-# target_include_directories(mancala_motor PRIVATE src)
+add_executable(mancala_motor src/main.cpp ${MOTOR_SOURCES})
+target_link_libraries(mancala_motor PRIVATE OpenMP::OpenMP_CXX)
+target_include_directories(mancala_motor PRIVATE src)
 
 add_executable(mancala_bench src/bench.cpp ${MOTOR_SOURCES})
 target_link_libraries(mancala_bench PRIVATE OpenMP::OpenMP_CXX)
