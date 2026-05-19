@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mancala Kalah</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>Mancala Kalah</h1>
+            <p class="subtitle">Juego de estrategia contra IA</p>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="game-wrapper">
+        <!-- Tablero de juego -->
+        <section class="board-section">
+            <div id="board" class="board">
+                <!-- Kalaha jugador 1 (izquierda) -->
+                <div id="kalaha-1" class="kalaha kalaha-top">
+                    <span class="kalaha-label">IA</span>
+                    <span id="k1-count" class="kalaha-count">0</span>
+                </div>
+
+                <!-- Hoyos centrales -->
+                <div id="pits-center" class="pits-center">
+                    <!-- Fila superior: jugador 1 -->
+                    <div id="row-top" class="row row-top">
+                        <!-- Se generan dinámicamente en app.js -->
+                    </div>
+
+                    <!-- Fila inferior: jugador 0 -->
+                    <div id="row-bottom" class="row row-bottom">
+                        <!-- Se generan dinámicamente en app.js -->
+                    </div>
+                </div>
+
+                <!-- Kalaha jugador 0 (derecha) -->
+                <div id="kalaha-0" class="kalaha kalaha-bottom">
+                    <span class="kalaha-label">Tú</span>
+                    <span id="k0-count" class="kalaha-count">0</span>
+                </div>
+            </div>
+
+            <!-- Game status -->
+            <div class="game-status">
+                <div id="status" class="status-message">Iniciando nueva partida...</div>
+                <div id="last-move" class="last-move"></div>
+            </div>
+        </section>
+
+        <!-- Control panel -->
+        <aside class="control-panel">
+            <div class="control-header">
+                <h2>Configuración</h2>
+            </div>
+
+            <div class="control-group">
+                <label for="algo" class="control-label">Algoritmo</label>
+                <select id="algo" class="control-input">
+                    <option value="alphabeta">Alfa-Beta</option>
+                    <option value="mcts">MCTS</option>
+                </select>
+            </div>
+
+            <div id="depth-group" class="control-group">
+                <label for="depth" class="control-label">Profundidad</label>
+                <div class="input-with-value">
+                    <input 
+                        type="range" 
+                        id="depth" 
+                        class="control-range"
+                        min="1" 
+                        max="16" 
+                        value="6"
+                        step="1"
+                    />
+                    <span id="depth-value" class="range-value">6</span>
+                </div>
+                <span class="control-hint">Mayor = más fuerte pero lento</span>
+            </div>
+
+            <div id="sims-group" class="control-group" style="display:none">
+                <label for="simulations" class="control-label">Simulaciones</label>
+                <div class="input-with-value">
+                    <input 
+                        type="range" 
+                        id="simulations" 
+                        class="control-range"
+                        min="100" 
+                        max="100000" 
+                        value="10000"
+                        step="100"
+                    />
+                    <span id="sims-value" class="range-value">10.000</span>
+                </div>
+                <span class="control-hint">Más = más fuerte pero lento</span>
+            </div>
+
+            <div class="control-group">
+                <label for="threads" class="control-label">Hilos (OpenMP)</label>
+                <div class="input-with-value">
+                    <input 
+                        type="range" 
+                        id="threads" 
+                        class="control-range"
+                        min="1" 
+                        max="8" 
+                        value="1"
+                        step="1"
+                    />
+                    <span id="threads-value" class="range-value">1</span>
+                </div>
+            </div>
+
+            <button id="btn-new" class="btn btn-primary">Nueva Partida</button>
+
+            <div id="error-msg" class="error-message"></div>
+        </aside>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">Universidad del Valle • Proyecto IA • Kalah (6,4)</p>
+    </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
