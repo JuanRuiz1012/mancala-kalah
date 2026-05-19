@@ -1,0 +1,84 @@
+{
+  "tests": 12,
+  "name": "AllTests",
+  "testsuites": [
+    {
+      "name": "BoardTest",
+      "tests": 6,
+      "testsuite": [
+        {
+          "name": "InitialState",
+          "file": "C:\/Users\/juanr\/OneDrive\/Escritorio\/mancala-kalah\/mancala-kalah\/motor\/tests\/test_board.cpp",
+          "line": 20
+        },
+        {
+          "name": "SeedConservation",
+          "file": "C:\/Users\/juanr\/OneDrive\/Escritorio\/mancala-kalah\/mancala-kalah\/motor\/tests\/test_board.cpp",
+          "line": 33
+        },
+        {
+          "name": "LegalMovesInitial",
+          "file": "C:\/Users\/juanr\/OneDrive\/Escritorio\/mancala-kalah\/mancala-kalah\/motor\/tests\/test_board.cpp",
+          "line": 44
+        },
+        {
+          "name": "ExtraTurn",
+          "file": "C:\/Users\/juanr\/OneDrive\/Escritorio\/mancala-kalah\/mancala-kalah\/motor\/tests\/test_board.cpp",
+          "line": 52
+        },
+        {
+          "name": "Capture",
+          "file": "C:\/Users\/juanr\/OneDrive\/Escritorio\/mancala-kalah\/mancala-kalah\/motor\/tests\/test_board.cpp",
+          "line": 65
+        },
+        {
+          "name": "TerminalDetection",
+          "file": "C:\/Users\/juanr\/OneDrive\/Escritorio\/mancala-kalah\/mancala-kalah\/motor\/tests\/test_board.cpp",
+          "line": 81
+        }
+      ]
+    },
+    {
+      "name": "AlphaBetaTest",
+      "tests": 3,
+      "testsuite": [
+        {
+          "name": "SameMoveasMinimax",
+          "file": "C:\/Users\/juanr\/OneDrive\/Escritorio\/mancala-kalah\/mancala-kalah\/motor\/tests\/test_board.cpp",
+          "line": 96
+        },
+        {
+          "name": "ParallelMatchesSerial",
+          "file": "C:\/Users\/juanr\/OneDrive\/Escritorio\/mancala-kalah\/mancala-kalah\/motor\/tests\/test_board.cpp",
+          "line": 109
+        },
+        {
+          "name": "MoveIsLegal",
+          "file": "C:\/Users\/juanr\/OneDrive\/Escritorio\/mancala-kalah\/mancala-kalah\/motor\/tests\/test_board.cpp",
+          "line": 119
+        }
+      ]
+    },
+    {
+      "name": "MCTSTest",
+      "tests": 3,
+      "testsuite": [
+        {
+          "name": "MoveIsLegal",
+          "file": "C:\/Users\/juanr\/OneDrive\/Escritorio\/mancala-kalah\/mancala-kalah\/motor\/tests\/test_board.cpp",
+          "line": 136
+        },
+        {
+          "name": "WinRateRange",
+          "file": "C:\/Users\/juanr\/OneDrive\/Escritorio\/mancala-kalah\/mancala-kalah\/motor\/tests\/test_board.cpp",
+          "line": 149
+        },
+        {
+          "name": "ParallelMoveIsLegal",
+          "file": "C:\/Users\/juanr\/OneDrive\/Escritorio\/mancala-kalah\/mancala-kalah\/motor\/tests\/test_board.cpp",
+          "line": 158
+        }
+      ]
+    }
+  ]
+}

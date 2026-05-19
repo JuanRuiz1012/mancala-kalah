@@ -1,0 +1,5 @@
+if(EXISTS "C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/test_board[1]_tests.cmake")
+  include("C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/test_board[1]_tests.cmake")
+else()
+  add_test(test_board_NOT_BUILT test_board_NOT_BUILT)
+endif()

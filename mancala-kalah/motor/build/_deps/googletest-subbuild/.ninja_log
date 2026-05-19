@@ -1,0 +1,21 @@
+# ninja log v7
+2	139	8008704929987952	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir	7d1f5925d2a06f26
+2	139	8008704929987952	C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-mkdir	7d1f5925d2a06f26
+141	2889	8008704957438975	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download	df046bd2e5ccc736
+141	2889	8008704957438975	C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-download	df046bd2e5ccc736
+2890	3006	8008704958657413	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update	d76bfe808eff709e
+2890	3006	8008704958657413	C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-update	d76bfe808eff709e
+3006	3146	8008704959920164	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch	de875e7f8cf1c226
+3006	3146	8008704959920164	C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-patch	de875e7f8cf1c226
+3146	3306	8008704961578209	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure	cab58a89947e2304
+3146	3306	8008704961578209	C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-configure	cab58a89947e2304
+3307	3436	8008704962955071	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build	259a9374291abf0b
+3307	3436	8008704962955071	C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-build	259a9374291abf0b
+3436	3549	8008704964095770	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install	fdc890676778cbc3
+3436	3549	8008704964095770	C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-install	fdc890676778cbc3
+3550	3661	8008704965244190	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test	cf5ade99c41674fd
+3550	3661	8008704965244190	C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-test	cf5ade99c41674fd
+3661	3843	8008704967043008	CMakeFiles/googletest-populate-complete	57a357856dafe75e
+3661	3843	8008704967043008	googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-done	57a357856dafe75e
+3661	3843	8008704967043008	C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate-complete	57a357856dafe75e
+3661	3843	8008704967043008	C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/googletest-populate-prefix/src/googletest-populate-stamp/googletest-populate-done	57a357856dafe75e

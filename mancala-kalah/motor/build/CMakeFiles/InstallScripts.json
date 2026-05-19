@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/cmake_install.cmake",
+		"C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-build/cmake_install.cmake",
+		"C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-build/googlemock/cmake_install.cmake",
+		"C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-build/googletest/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
