@@ -1,7 +1,3 @@
-"""
-Schemas de entrada y salida definidos con Pydantic.
-FastAPI los usa para validar automáticamente y devolver HTTP 422 si hay error.
-"""
 
 from typing import List, Literal, Optional
 from pydantic import BaseModel, Field, model_validator

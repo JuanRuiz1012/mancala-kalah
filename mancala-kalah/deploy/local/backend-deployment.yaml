@@ -4,7 +4,7 @@ metadata:
   name: backend
   namespace: default
 spec:
-  replicas: 3          # mínimo requerido por el enunciado
+  replicas: 3          
   selector:
     matchLabels:
       app: backend
@@ -15,11 +15,10 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/TU_USUARIO/mancala-backend:latest  # reemplazar con tu imagen
+          image: ghcr.io/TU_USUARIO/mancala-backend:latest  
           ports:
             - containerPort: 8000
           env:
-            # El motor se resuelve por el Service interno motor-svc
             - name: MOTOR_URL
               value: "http://motor-svc:9000"
           envFrom:

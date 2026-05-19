@@ -1,15 +1,3 @@
-/*
- * Benchmark independiente: lee posiciones de prueba desde un archivo,
- * ejecuta los motores y reporta métricas de tiempo, speedup y eficiencia.
- *
- * Uso:
- *   OMP_NUM_THREADS=4 ./mancala_bench --algo alphabeta --depth 8 --positions suite.txt
- *   OMP_NUM_THREADS=4 ./mancala_bench --algo mcts --simulations 10000 --positions suite.txt
- *
- * Formato de suite.txt: una posición por línea, 15 enteros separados por espacio:
- *   <14 valores del tablero> <current_player>
- */
-
 #include "board.hpp"
 #include "alphabeta.hpp"
 #include "mcts.hpp"
@@ -148,9 +136,10 @@ static void bench_mcts(const std::vector<Board> &positions, int simulations)
      }
 }
 
-// ---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 // Punto de entrada del benchmark
-// ---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
+
 int main(int argc, char *argv[])
 {
      std::string algo = "alphabeta";

@@ -7,10 +7,7 @@ on:
     branches: [main, master]
 
 jobs:
-
-  # ------------------------------------------------------------------
-  # Job 1: Compilar el motor C++ y ejecutar tests unitarios
-  # ------------------------------------------------------------------
+  #COMPILA MOTOR EN CPP
   build-motor:
     runs-on: ubuntu-22.04
 
@@ -34,9 +31,7 @@ jobs:
           cmake --build build --target test_board
           cd build && ctest --output-on-failure
 
-  # ------------------------------------------------------------------
-  # Job 2: Tests del backend Python
-  # ------------------------------------------------------------------
+  #TESTER BACKEND PYTHON
   test-backend:
     runs-on: ubuntu-22.04
 
@@ -58,10 +53,7 @@ jobs:
           cd backend
           pytest tests/ -v
 
-  # ------------------------------------------------------------------
-  # Job 3: Construir y publicar imágenes Docker en GHCR
-  # Solo en push a main/master (no en pull requests)
-  # ------------------------------------------------------------------
+  ##PUBLICA LAS IMÁGENES EN GHCR
   publish-images:
     needs: [build-motor, test-backend]
     runs-on: ubuntu-22.04
@@ -82,7 +74,6 @@ jobs:
         with:
           context: ./motor
           push: true
-          # Tag con el SHA del commit para que sea inmutable
           tags: ghcr.io/${{ github.repository_owner }}/mancala-motor:${{ github.sha }}
 
       - name: Construir y publicar imagen del backend

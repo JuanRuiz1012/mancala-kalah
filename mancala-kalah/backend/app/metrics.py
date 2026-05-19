@@ -1,8 +1,3 @@
-"""
-Métricas agregadas en memoria para el endpoint GET /metrics.
-No requiere base de datos: los contadores se resetean al reiniciar el pod.
-"""
-
 from dataclasses import dataclass, field
 
 

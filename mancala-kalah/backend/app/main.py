@@ -1,9 +1,3 @@
-"""
-Backend FastAPI: wrapper HTTP entre el frontend y el motor C++/OpenMP.
-Valida la entrada con Pydantic, delega el cálculo al motor por la red
-interna del clúster y devuelve la respuesta con el movimiento óptimo.
-"""
-
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware

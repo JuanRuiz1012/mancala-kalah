@@ -14,11 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # Necesario para que SonarQube pueda ver el historial de commits
           fetch-depth: 0
 
-      # Análisis con sonarqube-scan-action declarado en YAML
-      # (no se usa el plugin del marketplace de GitHub)
+
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v2
         env:

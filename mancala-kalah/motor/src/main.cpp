@@ -1,13 +1,3 @@
-/*
- * Servidor HTTP minimalista del motor.
- * Escucha en el puerto indicado por la variable de entorno MOTOR_PORT (default 9000).
- * Solo usa la librería estándar de C++ y POSIX sockets: sin dependencias externas.
- *
- * Endpoints:
- *   POST /move   → recibe JSON {board, side, algo, depth?, simulations?, threads}
- *                  devuelve JSON con el movimiento óptimo y estadísticas
- *   GET  /healthz → 200 OK siempre (liveness probe)
- */
 
 #include "board.hpp"
 #include "alphabeta.hpp"

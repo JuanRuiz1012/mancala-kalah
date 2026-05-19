@@ -1,8 +1,3 @@
-"""
-Lógica para comunicarse con el contenedor del motor C++/OpenMP.
-El motor vive en la red interna del clúster; su URL se toma de la variable
-de entorno MOTOR_URL (default: http://motor-svc:9000).
-"""
 
 import os
 import httpx

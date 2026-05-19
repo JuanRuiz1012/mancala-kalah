@@ -3,19 +3,29 @@
 #include <limits>
 #include <omp.h>
 
-// Peso del segundo término de la heurística (semillas en tablero)
+//Los errores de los includes son porque no se pudo compilar el motor en el pc 
+// probablemente falta implementar y configurar CMake para que funcionen los archivos cpp y chh
+
+// Peso del segundo término de la heurística 
 static constexpr double ALPHA_WEIGHT = 0.5;
 
 // Sentinelas de infinito para alfa y beta
 static constexpr int INF = std::numeric_limits<int>::max() / 2;
 
-// ---------------------------------------------------------------------------
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+// ESTOS COMENTARIOS SON PUESTOS POR JUAN RUIZ PARA EL ENTENDIMIENTO DEL ALGORITMO 
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 // Función heurística
-// h = (kalaha_propio - kalaha_rival) + ALPHA_WEIGHT * (semillas_lado_propio
-//                                                      - semillas_lado_rival)
+// h = (kalaha_propio - kalaha_rival) + ALPHA_WEIGHT * (semillas_lado_propio - semillas_lado_rival)
 // Se evalúa siempre desde el punto de vista del jugador que inició la búsqueda
 // (player_root), que se pasa como parámetro para no depender de board.current_player.
-// ---------------------------------------------------------------------------
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 static int heuristic(const Board& b, int player_root) {
     int rival = 1 - player_root;
 
@@ -33,12 +43,15 @@ static int heuristic(const Board& b, int player_root) {
          + static_cast<int>(ALPHA_WEIGHT * (seeds_own - seeds_rival));
 }
 
-// ---------------------------------------------------------------------------
-// Minimax con poda Alfa-Beta (recursivo, secuencial).
+////////////////////////////////////////////////////////////////////////////
+// Minimax con poda Alfa-Beta
 // Devuelve el valor heurístico del mejor estado alcanzable.
-// player_root: jugador que inició la búsqueda (para la heurística).
+// player_root: jugador que inició la búsqueda .
 // nodes y prunes se acumulan por referencia para estadísticas.
-// ---------------------------------------------------------------------------
+////////////////////////////////////////////////////////////////////////////
+
+
+
 static int alphabeta(Board b, int depth, int alpha, int beta,
                      bool maximizing, int player_root,
                      long long& nodes, long long& prunes) {
@@ -63,7 +76,7 @@ static int alphabeta(Board b, int depth, int alpha, int beta,
                                 player_root, nodes, prunes);
             best  = std::max(best, val);
             alpha = std::max(alpha, best);
-            if (beta <= alpha) { prunes++; break; } // poda beta
+            if (beta <= alpha) { prunes++; break; } // poda b
         }
         return best;
     } else {
@@ -76,15 +89,16 @@ static int alphabeta(Board b, int depth, int alpha, int beta,
                                 player_root, nodes, prunes);
             best = std::min(best, val);
             beta = std::min(beta, best);
-            if (beta <= alpha) { prunes++; break; } // poda alfa
+            if (beta <= alpha) { prunes++; break; } // poda a
         }
         return best;
     }
 }
 
-// ---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 // Interfaz secuencial: evalúa todos los movimientos legales en la raíz
-// ---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
+
 AlphaBetaResult alphabeta_best_move(const Board& board, int depth) {
     int player_root = board.current_player;
     std::vector<int> moves = board.legal_moves(player_root);
@@ -111,12 +125,13 @@ AlphaBetaResult alphabeta_best_move(const Board& board, int depth) {
     return result;
 }
 
-// ---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 // Interfaz paralela: root parallelism con OpenMP.
 // Cada hilo evalúa un movimiento raíz independiente. No comparten alfa/beta,
 // lo que puede reducir podas pero elimina la necesidad de sincronización.
 // Al final se toma el máximo entre los resultados de todos los hilos.
-// ---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
+
 AlphaBetaResult alphabeta_best_move_parallel(const Board& board, int depth) {
     int player_root = board.current_player;
     std::vector<int> moves = board.legal_moves(player_root);

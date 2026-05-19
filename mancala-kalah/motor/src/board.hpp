@@ -2,19 +2,6 @@
 #include <array>
 #include <vector>
 
-/*
- * Representación del tablero Kalah(6,4).
- *
- * Índices del arreglo de 14 posiciones (orden canónico):
- *   0-5  : hoyos del jugador 0 (sur)
- *   6    : kalaha del jugador 0
- *   7-12 : hoyos del jugador 1 (norte), en orden de siembra (7 es el más
- *           cercano al kalaha 0, 12 el más lejano)
- *   13   : kalaha del jugador 1
- *
- * Sentido de siembra: 0→1→2→3→4→5→6→7→8→9→10→11→12→13→0→...
- * El jugador salta el kalaha del oponente durante la siembra.
- */
 
 constexpr int HOLES      = 6;   // hoyos por lado
 constexpr int SEEDS_INIT = 4;   // semillas iniciales por hoyo
