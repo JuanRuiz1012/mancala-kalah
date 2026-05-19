@@ -1,0 +1,33 @@
+# Posiciones de prueba para benchmark de Kalah(6,4)
+# Formato: 14 valores del tablero (pits[0..13]) seguidos de current_player (0 o 1)
+# pits[6] = kalaha jugador 0, pits[13] = kalaha jugador 1
+
+# Posición inicial estándar
+4 4 4 4 4 4 0 4 4 4 4 4 4 0 0
+
+# Medio juego: jugador 0 con ventaja en kalaha
+6 2 3 5 1 4 8 2 3 1 4 2 3 6 0
+
+# Medio juego: jugador 1 con ventaja
+2 1 3 4 2 1 5 5 6 4 3 2 1 9 1
+
+# Final próximo: pocos hoyos con semillas
+0 0 0 0 2 1 18 3 0 0 1 0 0 20 0
+
+# Posición con turno extra posible para jugador 0 (pits[2]=4 → llega al kalaha)
+0 0 4 0 0 0 10 4 4 4 4 4 4 10 0
+
+# Posición con captura posible para jugador 1
+3 5 2 1 4 2 7 0 3 5 2 4 1 8 1
+
+# Posición simétrica
+3 3 3 3 3 3 3 3 3 3 3 3 3 3 0
+
+# Posición casi terminal
+0 0 0 0 0 1 22 0 0 0 0 0 2 23 0
+
+# Jugador 1 a punto de ganar
+0 1 0 0 0 0 23 0 0 0 0 0 0 24 1
+
+# Tablero abierto con muchos movimientos
+5 5 5 5 5 5 3 5 5 5 5 5 5 3 0
