@@ -1,0 +1,32 @@
+name: SonarQube
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+
+  sonar-scan:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Necesario para que SonarQube pueda ver el historial de commits
+          fetch-depth: 0
+
+      # Análisis con sonarqube-scan-action declarado en YAML
+      # (no se usa el plugin del marketplace de GitHub)
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey=mancala-kalah
+            -Dsonar.sources=motor/src,backend/app,frontend
+            -Dsonar.exclusions=**/build/**,**/__pycache__/**,**/node_modules/**
+            -Dsonar.python.version=3.11

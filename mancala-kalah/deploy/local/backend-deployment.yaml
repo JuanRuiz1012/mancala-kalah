@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: default
+spec:
+  replicas: 3          # mínimo requerido por el enunciado
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/TU_USUARIO/mancala-backend:latest  # reemplazar con tu imagen
+          ports:
+            - containerPort: 8000
+          env:
+            # El motor se resuelve por el Service interno motor-svc
+            - name: MOTOR_URL
+              value: "http://motor-svc:9000"
+          envFrom:
+            - configMapRef:
+                name: mancala-config
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5

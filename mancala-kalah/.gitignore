@@ -1,0 +1,20 @@
+# C++ / CMake
+motor/build/
+*.o
+*.a
+*.out
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+
+# Docker
+.dockerignore
+
+# Editors
+.vscode/
+.idea/
+*.swp

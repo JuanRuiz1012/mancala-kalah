@@ -1,0 +1,48 @@
+# Levanta todos los contenedores con: docker compose up --build
+# Detiene y limpia con:              docker compose down
+
+services:
+
+  # ------------------------------------------------------------------
+  # Contenedor 1: Motor C++/OpenMP
+  # Escucha en el puerto 9000 interno (solo accesible por el backend)
+  # ------------------------------------------------------------------
+  motor:
+    build: ../../motor
+    container_name: motor
+    environment:
+      MOTOR_PORT: "9000"
+      OMP_NUM_THREADS: "4"   # hilos por defecto; se puede sobreescribir por petición
+    ports:
+      - "9000:9000"          # expuesto también al host para pruebas directas
+    restart: unless-stopped
+
+  # ------------------------------------------------------------------
+  # Contenedor 2: Backend FastAPI
+  # Depende del motor para poder responder /readyz
+  # ------------------------------------------------------------------
+  backend:
+    build: ../../backend
+    container_name: backend
+    environment:
+      MOTOR_URL: "http://motor:9000"          # nombre del servicio en la red de compose
+      ALLOWED_ORIGINS: "http://localhost:8080" # origen del frontend en local
+      MOTOR_TIMEOUT_S: "30"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - motor
+    restart: unless-stopped
+
+  # ------------------------------------------------------------------
+  # Contenedor 3: Frontend nginx
+  # Sirve los archivos estáticos en el puerto 8080
+  # ------------------------------------------------------------------
+  frontend:
+    build: ../../frontend
+    container_name: frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

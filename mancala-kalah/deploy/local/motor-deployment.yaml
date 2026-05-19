@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: motor
+  namespace: default
+spec:
+  replicas: 1          # el motor es statefull durante el cálculo; 1 réplica en local
+  selector:
+    matchLabels:
+      app: motor
+  template:
+    metadata:
+      labels:
+        app: motor
+    spec:
+      containers:
+        - name: motor
+          image: ghcr.io/TU_USUARIO/mancala-motor:latest   # reemplazar con tu imagen
+          ports:
+            - containerPort: 9000
+          envFrom:
+            - configMapRef:
+                name: mancala-config
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "256Mi"
+            limits:
+              cpu: "2"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 9000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 9000
+            initialDelaySeconds: 3
+            periodSeconds: 5

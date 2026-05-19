@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+
+  # ------------------------------------------------------------------
+  # Job 1: Compilar el motor C++ y ejecutar tests unitarios
+  # ------------------------------------------------------------------
+  build-motor:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar dependencias del motor
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ libgomp-dev
+
+      - name: Compilar motor en modo Release
+        run: |
+          cd motor
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build -j$(nproc)
+
+      - name: Ejecutar tests unitarios del motor
+        run: |
+          cd motor
+          cmake --build build --target test_board
+          cd build && ctest --output-on-failure
+
+  # ------------------------------------------------------------------
+  # Job 2: Tests del backend Python
+  # ------------------------------------------------------------------
+  test-backend:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias del backend
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Ejecutar tests del backend
+        run: |
+          cd backend
+          pytest tests/ -v
+
+  # ------------------------------------------------------------------
+  # Job 3: Construir y publicar imágenes Docker en GHCR
+  # Solo en push a main/master (no en pull requests)
+  # ------------------------------------------------------------------
+  publish-images:
+    needs: [build-motor, test-backend]
+    runs-on: ubuntu-22.04
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login en GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Construir y publicar imagen del motor
+        uses: docker/build-push-action@v5
+        with:
+          context: ./motor
+          push: true
+          # Tag con el SHA del commit para que sea inmutable
+          tags: ghcr.io/${{ github.repository_owner }}/mancala-motor:${{ github.sha }}
+
+      - name: Construir y publicar imagen del backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/mancala-backend:${{ github.sha }}
+
+      - name: Construir y publicar imagen del frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/mancala-frontend:${{ github.sha }}
