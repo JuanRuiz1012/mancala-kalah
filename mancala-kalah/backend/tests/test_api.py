@@ -35,7 +35,7 @@ def test_healthz_ok():
 # ---------------------------------------------------------------------------
 # POST /move con alphabeta
 # ---------------------------------------------------------------------------
-@patch("app.motor_client.call_motor", new_callable=AsyncMock, return_value=MOCK_MOTOR_RESPONSE)
+@patch("app.main.call_motor", new_callable=AsyncMock, return_value=MOCK_MOTOR_RESPONSE)
 def test_move_alphabeta(mock_motor):
     payload = {
         "board": BOARD_INITIAL,
@@ -54,7 +54,7 @@ def test_move_alphabeta(mock_motor):
 # ---------------------------------------------------------------------------
 # POST /move con mcts
 # ---------------------------------------------------------------------------
-@patch("app.motor_client.call_motor", new_callable=AsyncMock, return_value={
+@patch("app.main.call_motor", new_callable=AsyncMock, return_value={
     "move": 2, "evaluation": 0.55, "elapsed_ms": 50,
     "stats": {"algo": "mcts", "rollouts": 1000, "tree_depth_avg": 10.0, "win_rate": 0.55},
     "threads_used": 1
