@@ -96,14 +96,31 @@ static std::string http_err(int code, const std::string &msg)
 static void handle_connection(int client_fd)
 {
      char buf[8192] = {};
-     ssize_t n = recv(client_fd, buf, sizeof(buf) - 1, 0);
-     if (n <= 0)
+     std::string req;
+     ssize_t n;
+     // Leer hasta obtener el body completo
+     while ((n = recv(client_fd, buf, sizeof(buf) - 1, 0)) > 0) {
+          req.append(buf, n);
+          // Si ya tenemos el separador headers/body, verificar Content-Length
+          auto sep = req.find("\r\n\r\n");
+          if (sep != std::string::npos) {
+               // Buscar Content-Length
+               auto cl_pos = req.find("Content-Length: ");
+               if (cl_pos != std::string::npos) {
+                    int content_len = std::stoi(req.substr(cl_pos + 16));
+                    int body_len = (int)req.size() - (int)(sep + 4);
+                    if (body_len >= content_len) break;
+               } else {
+                    break;
+               }
+          }
+          memset(buf, 0, sizeof(buf));
+     }
+     if (req.empty())
      {
           close(client_fd);
           return;
      }
-
-     std::string req(buf, n);
 
      // Liveness probe
      if (req.find("GET /healthz") != std::string::npos)

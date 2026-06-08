@@ -15,7 +15,7 @@ El repositorio tiene dos workflows en `.github/workflows/`:
 
 ### Job 1: `build-motor`
 
-Corre en `ubuntu-22.04`. Instala `cmake`, `g++` y `libgomp-dev` mediante `apt-get`, compila el motor en modo `Release` con cmake y ejecuta los tests unitarios con `ctest --output-on-failure`.
+Corre en `ubuntu-22.04`. Instala `cmake`, `g++`, `libgomp-dev` y `ninja-build` mediante `apt-get`, compila el motor en modo `Release` con cmake y ejecuta los tests unitarios con `ctest --output-on-failure`.
 
 Si cualquier test falla, el job falla y los siguientes jobs no se ejecutan (`needs: [build-motor, test-backend]`).
 
@@ -27,7 +27,7 @@ Los tests del backend usan `unittest.mock.patch` para reemplazar `call_motor` co
 
 ### Job 3: `publish-images`
 
-Solo corre si el evento es `push` (no en PRs). Depende de que los dos jobs anteriores hayan pasado. Se autentica en `ghcr.io` con `docker/login-action` usando el token automático `GITHUB_TOKEN` (no requiere secret adicional). Construye y publica las tres imágenes etiquetadas con el SHA del commit para trazabilidad inmutable.
+Solo corre si el evento es `push` (no en PRs). Depende de que los dos jobs anteriores hayan pasado. Se autentica en `ghcr.io` con `docker/login-action` usando el token automático `GITHUB_TOKEN`. Construye y publica las tres imágenes etiquetadas con el SHA del commit para trazabilidad inmutable.
 
 ---
 
@@ -35,11 +35,11 @@ Solo corre si el evento es `push` (no en PRs). Depende de que los dos jobs anter
 
 ```mermaid
 flowchart TD
-    A["Push a main"] --> B["build-motor\n(cmake + ctest)"]
+    A["Push a main"] --> B["build-motor\n(cmake + ninja + ctest)"]
     A --> C["test-backend\n(pytest)"]
     B --> D{"¿ambos\npasaron?"}
     C --> D
-    D -->|sí| E["publish-images\n(ghcr.io)"]
+    D -->|sí| E["publish-images\n(ghcr.io/juanruiz1012)"]
     D -->|no| F["Pipeline falla\nNo se publican imágenes"]
 ```
 
@@ -61,7 +61,7 @@ El análisis SonarQube se declara completamente en YAML usando la action oficial
     args: >
       -Dsonar.projectKey=mancala-kalah
       -Dsonar.sources=motor/src,backend/app,frontend
-      -Dsonar.exclusions=**/build/**,**/__pycache__/**
+      -Dsonar.exclusions=**/build/**,**/__pycache__/**,**/node_modules/**
       -Dsonar.python.version=3.11
 ```
 
@@ -69,8 +69,8 @@ El análisis SonarQube se declara completamente en YAML usando la action oficial
 
 | Secret | Valor |
 |---|---|
-| `SONAR_TOKEN` | Token generado en el servidor SonarQube |
-| `SONAR_HOST_URL` | URL del servidor (ej. `https://sonarcloud.io`) |
+| `SONAR_TOKEN` | Token generado en el servidor SonarQube / SonarCloud |
+| `SONAR_HOST_URL` | URL del servidor (p.ej. `https://sonarcloud.io`) |
 
 ---
 

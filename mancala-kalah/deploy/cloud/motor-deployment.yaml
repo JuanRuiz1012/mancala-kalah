@@ -15,7 +15,9 @@ spec:
     spec:
       containers:
         - name: motor
-          image: ghcr.io/TU_USUARIO/mancala-motor:v1.0.0   # tag inmutable en producción
+          # CORRECCIÓN: reemplazado TU_USUARIO por el usuario real del repositorio
+          image: ghcr.io/juanruiz1012/mancala-motor:v1.0.0
+          imagePullPolicy: Always
           ports:
             - containerPort: 9000
           envFrom:

@@ -16,35 +16,48 @@ Se implementó un motor completo del juego Mancala Kalah(6,4) con dos algoritmos
 
 **Multi-stage build en el Dockerfile del motor.** Separar la etapa de compilación de la imagen final redujo el tamaño de la imagen del motor de ~700 MB a ~50 MB, lo que acelera los despliegues.
 
+**Google Test para el motor.** Las pruebas unitarias detectaron un bug en la lógica de captura antes del primer despliegue, ahorrando tiempo de depuración con el sistema completo levantado.
+
 ---
 
 ## Limitaciones encontradas
 
-**Root parallelism reduce la eficacia de las podas en Alfa-Beta.** Al no compartir cotas α/β entre hilos, cada subárbol se explora como si fuera el primero, reduciendo el número de podas por hilo respecto al secuencial. El speedup real es inferior al teórico.
+**Root parallelism reduce la eficacia de las podas en Alfa-Beta.** Al no compartir cotas α/β entre hilos, cada subárbol se explora como si fuera el primero, reduciendo el número de podas por hilo respecto al algoritmo secuencial. El speedup real es inferior al teórico.
 
-**El motor no escala horizontalmente.** Se decidió tener una sola réplica del motor para evitar la complejidad de sincronizar estado (el motor es stateless entre peticiones, pero cada cálculo es intensivo en CPU y múltiples réplicas competirían por los mismos núcleos en un nodo compartido). En producción real habría que usar nodos dedicados por réplica del motor.
+**El motor no escala horizontalmente.** Se decidió tener una sola réplica del motor para evitar la complejidad de sincronizar estado. En producción real habría que usar nodos dedicados por réplica del motor.
 
-**El servidor HTTP del motor es secuencial.** Atiende una petición a la vez. En un escenario de varios usuarios simultáneos esto crea cola. La solución correcta sería agregar un thread pool para las conexiones entrantes, pero quedó fuera del alcance del proyecto.
+**El servidor HTTP del motor es secuencial.** Atiende una petición a la vez. En un escenario de varios usuarios simultáneos esto crea cola. La solución correcta sería agregar un thread pool para las conexiones entrantes.
 
 **Sin persistencia.** Las métricas del endpoint `/metrics` del backend se resetean al reiniciar el pod. Para un sistema de producción se necesitaría un volumen persistente o exportar las métricas a Prometheus/Grafana.
 
 ---
 
-## Retos técnicos
+## Retos técnicos y cómo se resolvieron
 
-**Parseo JSON sin librerías en C++.** El enunciado prohíbe dependencias externas para el motor, lo que obligó a implementar un parser JSON mínimo a mano. Funciona para el schema fijo del proyecto pero no es un parser genérico.
+**Parseo JSON sin librerías en C++.** El enunciado no permite dependencias externas para el motor, lo que obligó a implementar un parser JSON mínimo a mano. Funciona para el schema fijo del proyecto pero no es un parser genérico.
 
 **Sincronización de semillas aleatorias en MCTS paralelo.** Si todos los hilos usan la misma semilla, generan la misma secuencia y los árboles son idénticos, eliminando el beneficio del paralelismo. Se solucionó sumando `t * 1000` a la semilla de cada hilo.
 
 **CORS en producción.** Al cambiar la URL del frontend de local a nube, las peticiones fallaban por el preflight CORS. Se resolvió configurando `ALLOWED_ORIGINS` como variable de entorno en el ConfigMap en lugar de hardcodearlo en el código.
 
-**Turno extra en la interfaz.** El frontend aplica el movimiento localmente para actualización visual inmediata, pero la lógica del turno extra es compleja y puede divergir del motor. Se simplificó confiando en el motor como fuente de verdad y alternando el turno en el cliente solo como heurística visual.
+**Bug de ninja-build en el Dockerfile.** El CMakeLists original usaba Ninja como generador pero el Dockerfile no lo instalaba, causando fallos de compilación. Se corrigió instalando `ninja-build` explícitamente.
 
 ---
 
 ## Lecciones aprendidas
 
-- Definir el contrato de la API (schema JSON) antes de implementar el motor y el frontend evita mucho retrabajo. En este proyecto se hizo correctamente desde el inicio.
-- Las pruebas unitarias del motor (Google Test) detectaron un bug en la lógica de captura antes del primer despliegue, ahorrando tiempo de depuración con el sistema completo levantado.
-- El pipeline de CI que compila y testea automáticamente dio confianza para hacer cambios frecuentes sin temor a romper el sistema.
-- Kubernetes añade complejidad operacional significativa que no se justifica para un solo desarrollador o equipo pequeño. docker compose es suficiente para desarrollo y demostraciones. Kubernetes aporta valor real cuando se necesitan múltiples réplicas, rolling updates y probes de salud automáticos.
+- Definir el contrato de la API (schema JSON) antes de implementar el motor y el frontend evita mucho retrabajo.
+- Las pruebas unitarias del motor detectaron bugs antes del primer despliegue, ahorrando tiempo de depuración.
+- El pipeline de CI que compila y testea automáticamente dio confianza para hacer cambios frecuentes.
+- Kubernetes añade complejidad operacional significativa que no se justifica para un solo desarrollador. Docker Compose es suficiente para desarrollo y demostraciones. Kubernetes aporta valor real cuando se necesitan múltiples réplicas, rolling updates y probes de salud automáticos.
+- La separación estricta en contenedores, aunque más trabajo inicial, hace el sistema mucho más fácil de mantener y depurar a largo plazo.
+
+---
+
+## Recomendaciones de mejoras futuras
+
+- Implementar **YBWC (Young Brothers Wait Concept)** para Alfa-Beta paralelo: explorar el primer hijo secuencialmente para obtener una buena cota β antes de paralelizar los hermanos. Reduciría la pérdida de podas.
+- Agregar **tree parallelization** para MCTS con virtual loss, que permite explorar más regiones del árbol con el mismo presupuesto de simulaciones.
+- Hacer el servidor HTTP del motor **multi-hilo** (un hilo por conexión) para atender múltiples usuarios simultáneamente sin espera.
+- Integrar **Prometheus y Grafana** para visualizar las métricas de rendimiento en tiempo real durante los benchmarks.
+- Implementar **iterative deepening** en Alfa-Beta para convertirlo de anytime: permite detenerlo cuando se acaba el tiempo y devolver la mejor jugada encontrada hasta ese momento, igual que MCTS.

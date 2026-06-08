@@ -37,13 +37,15 @@ app.add_middleware(
 async def move(request: MoveRequest):
     # Construir payload para el motor (campos que el motor entiende)
     payload = {
-        "board":       request.board,
-        "side":        request.side,
-        "algo":        request.algo,
-        "depth":       request.depth,
-        "simulations": request.simulations,
-        "threads":     request.threads,
+        "board":   request.board,
+        "side":    request.side,
+        "algo":    request.algo,
+        "threads": request.threads,
     }
+    if request.depth is not None:
+        payload["depth"] = request.depth
+    if request.simulations is not None:
+        payload["simulations"] = request.simulations
 
     result = await call_motor(payload)
 

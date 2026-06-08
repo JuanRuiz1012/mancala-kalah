@@ -4,7 +4,7 @@ metadata:
   name: backend
   namespace: default
 spec:
-  replicas: 3          # mínimo exigido por el enunciado para la nube
+  replicas: 3          # mínimo exigido por el enunciado
   selector:
     matchLabels:
       app: backend
@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/TU_USUARIO/mancala-backend:v1.0.0
+          image: ghcr.io/juanruiz1012/mancala-backend:v1.0.0
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           env:

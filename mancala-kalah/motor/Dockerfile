@@ -2,30 +2,31 @@
 FROM ubuntu:22.04 AS builder
 
 # Instalar dependencias de compilación
+# CORRECCIÓN: se agrega ninja-build que CMake necesita por defecto
 RUN apt-get update && apt-get install -y \
-     cmake \
-     g++ \
-     libgomp1 \
-     make \
-     wget \
-     unzip \
-     && rm -rf /var/lib/apt/lists/*
+    cmake \
+    g++ \
+    libgomp1 \
+    make \
+    ninja-build \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
 COPY . .
 
 # Compilar en modo Release
-RUN cmake -B build -DCMAKE_BUILD_TYPE=Release \
-     && cmake --build build --target mancala_motor -j$(nproc)
+# CORRECCIÓN: se usa -G "Ninja" explícitamente para evitar ambigüedad
+RUN cmake -B build -DCMAKE_BUILD_TYPE=Release -G "Ninja" \
+    && cmake --build build --target mancala_motor -j$(nproc)
 
 # ---------------------------------------------------------------------------
-# Etapa 2: imagen final mínima
+# Etapa 2: imagen final mínima (~50 MB)
 # ---------------------------------------------------------------------------
 FROM ubuntu:22.04
 
 # Solo la librería de runtime de OpenMP
 RUN apt-get update && apt-get install -y libgomp1 \
-     && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 COPY --from=builder /build/build/mancala_motor .

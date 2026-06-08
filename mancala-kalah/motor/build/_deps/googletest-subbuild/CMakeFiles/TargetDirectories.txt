@@ -1,3 +1,0 @@
-C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/CMakeFiles/googletest-populate.dir
-C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/CMakeFiles/edit_cache.dir
-C:/Users/juanr/OneDrive/Escritorio/mancala-kalah/mancala-kalah/motor/build/_deps/googletest-subbuild/CMakeFiles/rebuild_cache.dir

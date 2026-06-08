@@ -95,14 +95,14 @@ TEST(BoardTest, TerminalDetection)
 // AlfaBeta y Minimax puro deben elegir el mismo movimiento a igual profundidad
 TEST(AlphaBetaTest, SameMoveasMinimax)
 {
-     Board b;
-     // Comparar versión secuencial consigo misma a profundidades bajas
-     // (la versión sin poda no está expuesta por separado; verificamos consistencia
-     //  ejecutando dos veces con el mismo estado)
-     AlphaBetaResult r1 = alphabeta_best_move(b, 4);
-     AlphaBetaResult r2 = alphabeta_best_move(b, 4);
-     EXPECT_EQ(r1.move, r2.move) << "AlfaBeta debe ser determinista";
-     EXPECT_EQ(r1.evaluation, r2.evaluation);
+    Board b;
+    // Se usa profundidad baja (4) para que minimax puro sea tratable
+    AlphaBetaResult mm  = minimax_best_move(b, 4);
+    AlphaBetaResult ab  = alphabeta_best_move(b, 4);
+    EXPECT_EQ(mm.move, ab.move)
+        << "Minimax puro y Alfa-Beta deben elegir el mismo movimiento";
+    EXPECT_EQ(mm.evaluation, ab.evaluation)
+        << "Minimax puro y Alfa-Beta deben tener la misma evaluación";
 }
 
 // La versión paralela debe elegir el mismo movimiento que la secuencial
@@ -127,6 +127,18 @@ TEST(AlphaBetaTest, MoveIsLegal)
                found = true;
      EXPECT_TRUE(found) << "El movimiento no es legal";
 }
+// Minimax puro también debe devolver un movimiento legal
+TEST(AlphaBetaTest, MinimaxMoveIsLegal)
+{
+    Board b;
+    AlphaBetaResult r = minimax_best_move(b, 3);
+    auto moves = b.legal_moves(b.current_player);
+    bool found = false;
+    for (int m : moves)
+        if (m == r.move) found = true;
+    EXPECT_TRUE(found) << "Minimax puro devolvió un movimiento ilegal";
+}
+
 
 // ---------------------------------------------------------------------------
 // Tests de MCTS
